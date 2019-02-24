@@ -321,7 +321,7 @@ init_video_mode (void)
   /* Ignore any video mode options if running on the GP2X or PSP
    * - force a 320x240 full screen resolution, with 8 bits per pixel,
    * as well as specific SDL surface flags */
-  flag = SDL_SWSURFACE | SDL_FULLSCREEN;
+  flag = SDL_HWSURFACE | SDL_FULLSCREEN;
 #ifdef POWERMANGA_GP2X
   window_height = GP2X_VIDEO_HEIGHT;
   /* Use a 20px y offset to center the output on the GP2X's screen */
@@ -416,7 +416,7 @@ init_video_mode (void)
 
   /* initialize video mode */
   //public_surface = SDL_SetVideoMode (width, height, bits_per_pixel, flag);
-  public_surface = SDL_SetVideoMode (320, 480, bits_per_pixel, flag);
+  public_surface = SDL_SetVideoMode (320, 240, bits_per_pixel, flag);
   if (public_surface == NULL)
     {
       LOG_ERR ("SDL_SetVideoMode() return %s", SDL_GetError ());
@@ -1361,7 +1361,7 @@ display_movie (void)
       {
         get_rect (&rsour, 0, 0, (Sint16) display_width,
                   (Sint16) display_height);
-        if (SDL_BlitSurface_dh (movie_surface, &rsour, public_surface, &rsour) <
+        if (SDL_BlitSurface (movie_surface, &rsour, public_surface, &rsour) <
             0)
           {
             LOG_ERR ("SDL_BlitSurface() return %s", SDL_GetError ());
@@ -1389,7 +1389,7 @@ display_movie (void)
           }
         rsour.w = (Uint16) window_width;
         rsour.h = (Uint16) window_height;
-        if (SDL_BlitSurface_dh (scalex_surface, &rsour, public_surface, &rsour) <
+        if (SDL_BlitSurface (scalex_surface, &rsour, public_surface, &rsour) <
             0)
           {
             LOG_ERR ("SDL_BlitSurface() return %s", SDL_GetError ());
@@ -1435,7 +1435,7 @@ display_320x200 (void)
   rsour.h = (Uint16) offscreen_height_visible;
   get_rect (&rdest, 0, 16, (Sint16) display_width, (Sint16) display_height);
   printf("display: %d %d offscreen: %d %d %d\n", display_width, display_height, offscreen_width_visible, offscreen_height_visible, offscreen_clipsize);
-  if (SDL_BlitSurface_dh (game_surface, &rsour, public_surface, &rdest) < 0)
+  if (SDL_BlitSurface (game_surface, &rsour, public_surface, &rdest) < 0)
     {
       LOG_ERR ("SDL_BlitSurface(game_surface) return %s", SDL_GetError ());
     }
@@ -1447,7 +1447,7 @@ display_320x200 (void)
       rsour.h = OPTIONS_HEIGHT;
       get_rect (&rdest, (Sint16) offscreen_width_visible, 16, OPTIONS_WIDTH,
                 OPTIONS_HEIGHT);
-      if (SDL_BlitSurface_dh (options_surface, &rsour, public_surface, &rdest))
+      if (SDL_BlitSurface (options_surface, &rsour, public_surface, &rdest))
         {
           LOG_ERR ("SDL_BlitSurface(options_surface) return %s",
                    SDL_GetError ());
@@ -1459,7 +1459,7 @@ display_320x200 (void)
       rsour.w = (Uint16) score_offscreen_width;
       rsour.h = SCORES_HEIGHT;
       get_rect (&rdest, 0, 0, (Sint16) display_width, SCORES_HEIGHT);
-      if (SDL_BlitSurface_dh (score_surface, &rsour, public_surface, &rdest) < 0)
+      if (SDL_BlitSurface (score_surface, &rsour, public_surface, &rdest) < 0)
         {
           LOG_ERR ("SDL_BlitSurface(score_surface) return %s",
                    SDL_GetError ());
@@ -1480,7 +1480,7 @@ display_320x200 (void)
           rsour.h = 28;
           get_rect (&rdest, (Sint16) (offscreen_width_visible + optx),
                     (Sint16) (16 + opty), 28, 28);
-          if (SDL_BlitSurface_dh
+          if (SDL_BlitSurface
               (options_surface, &rsour, public_surface, &rdest) < 0)
             {
               LOG_ERR ("SDL_BlitSurface(options_surface) return %s",
@@ -1494,7 +1494,7 @@ display_320x200 (void)
           rsour.w = 14;
           rsour.h = 8;
           get_rect (&rdest, 297, 187, 14, 8);
-          if (SDL_BlitSurface_dh
+          if (SDL_BlitSurface
               (options_surface, &rsour, public_surface, &rdest) < 0)
             {
               LOG_ERR ("SDL_BlitSurface(options_surface) return %s",
@@ -1509,7 +1509,7 @@ display_320x200 (void)
           rsour.w = 14;
           rsour.h = 8;
           get_rect (&rdest, 297, 21, 14, 8);
-          if (SDL_BlitSurface_dh
+          if (SDL_BlitSurface
               (options_surface, &rsour, public_surface, &rdest) < 0)
             {
               LOG_ERR ("SDL_BlitSurface(options_surface) return %s",
@@ -1527,7 +1527,7 @@ display_320x200 (void)
           rsour.h = 9;
           get_rect (&rdest, 210, 3, 100, 9);
           optx =
-            SDL_BlitSurface_dh (score_surface, &rsour, public_surface, &rdest);
+            SDL_BlitSurface (score_surface, &rsour, public_surface, &rdest);
           if (optx < 0)
             {
               LOG_ERR ("SDL_BlitSurface(score_surface) return %s",
@@ -1544,7 +1544,7 @@ display_320x200 (void)
           rsour.w = 45;
           rsour.h = 9;
           get_rect (&rdest, 10, 3, 45, 9);
-          if (SDL_BlitSurface_dh (score_surface, &rsour, public_surface, &rdest)
+          if (SDL_BlitSurface (score_surface, &rsour, public_surface, &rdest)
               < 0)
             {
               LOG_ERR ("SDL_BlitSurface(score_surface) return %s",
@@ -1561,7 +1561,7 @@ display_320x200 (void)
           rsour.w = 128;
           rsour.h = 16;
           get_rect (&rdest, 68, 0, 128, 16);
-          if (SDL_BlitSurface_dh (score_surface, &rsour, public_surface, &rdest)
+          if (SDL_BlitSurface (score_surface, &rsour, public_surface, &rdest)
               < 0)
             {
               LOG_ERR ("SDL_BlitSurface(score_surface) return %s",
@@ -1727,7 +1727,7 @@ display_640x400 (void)
       rdest.y = (Sint16) (32 + starty);
       rdest.w = (Uint16) (offscreen_width_visible * 2);
       rdest.h = (Uint16) (offscreen_height_visible * 2);
-      v = SDL_BlitSurface_dh (scalex_surface, &rsour, public_surface, &rdest);
+      v = SDL_BlitSurface (scalex_surface, &rsour, public_surface, &rdest);
       if (v < 0)
         {
           LOG_ERR ("SDL_BlitSurface(scalex_surface) return %s",
@@ -1752,7 +1752,7 @@ display_640x400 (void)
           rdest.w = 128 * 2;
           rdest.h = 16 * 2;
           v =
-            SDL_BlitSurface_dh (scalex_surface, &rsour, public_surface, &rdest);
+            SDL_BlitSurface (scalex_surface, &rsour, public_surface, &rdest);
           if (v < 0)
             {
               LOG_ERR ("SDL_BlitSurface(scalex_surface) return %s",
@@ -1782,7 +1782,7 @@ display_640x400 (void)
           rdest.w = 14 * 2;
           rdest.h = 8 * 2;
           v =
-            SDL_BlitSurface_dh (scalex_surface, &rsour, public_surface, &rdest);
+            SDL_BlitSurface (scalex_surface, &rsour, public_surface, &rdest);
           if (v < 0)
             {
               LOG_ERR ("SDL_BlitSurface(scalex_surface) return %s",
@@ -1813,7 +1813,7 @@ display_640x400 (void)
           rdest.w = 14 * 2;
           rdest.h = 8 * 2;
           v =
-            SDL_BlitSurface_dh (scalex_surface, &rsour, public_surface, &rdest);
+            SDL_BlitSurface (scalex_surface, &rsour, public_surface, &rdest);
           if (v < 0)
             {
               LOG_ERR ("SDL_BlitSurface(scalex_surface) return %s",
@@ -1847,7 +1847,7 @@ display_640x400 (void)
           rdest.w = 28 * 2;
           rdest.h = 28 * 2;
           v =
-            SDL_BlitSurface_dh (scalex_surface, &rsour, public_surface, &rdest);
+            SDL_BlitSurface (scalex_surface, &rsour, public_surface, &rdest);
           if (v < 0)
             {
               LOG_ERR ("SDL_BlitSurface(scalex_surface) return %s",
@@ -1877,7 +1877,7 @@ display_640x400 (void)
           rdest.w = 100 * 2;
           rdest.h = 9 * 2;
           v =
-            SDL_BlitSurface_dh (scalex_surface, &rsour, public_surface, &rdest);
+            SDL_BlitSurface (scalex_surface, &rsour, public_surface, &rdest);
           if (v < 0)
             {
               LOG_ERR ("SDL_BlitSurface(scalex_surface) return %s",
@@ -1905,7 +1905,7 @@ display_640x400 (void)
           rdest.w = 45 * 2;
           rdest.h = 9 * 2;
           v =
-            SDL_BlitSurface_dh (scalex_surface, &rsour, public_surface, &rdest);
+            SDL_BlitSurface (scalex_surface, &rsour, public_surface, &rdest);
           if (v < 0)
             {
               LOG_ERR ("SDL_BlitSurface(scalex_surface) return %s",
@@ -1936,7 +1936,7 @@ display_640x400 (void)
       rdest.y = (Sint16) starty;
       rdest.w = (Uint16) window_width;
       rdest.h = (Uint16) window_height;
-      v = SDL_BlitSurface_dh (scalex_surface, &rsour, public_surface, &rdest);
+      v = SDL_BlitSurface (scalex_surface, &rsour, public_surface, &rdest);
       if (v < 0)
         {
           LOG_ERR ("SDL_BlitSurface(scalex_surface) return %s",
@@ -2352,7 +2352,7 @@ show_page_order (Sint32 num, char *lang, Sint32 page_num)
             }
         }
 
-      SDL_BlitSurface_dh (surface_page, &r, public_surface, &r2);
+      SDL_BlitSurface (surface_page, &r, public_surface, &r2);
       if (page_num != 0)
         {
           SDL_Rect rc1, rc2;
@@ -2364,7 +2364,7 @@ show_page_order (Sint32 num, char *lang, Sint32 page_num)
           rc2.y = cptPosY;
           rc2.w = rc1.w;
           rc2.h = rc1.h;
-          SDL_BlitSurface_dh (counter_surface, &rc1, public_surface, &rc2);
+          SDL_BlitSurface (counter_surface, &rc1, public_surface, &rc2);
         }
 
       SDL_Flip (public_surface);

@@ -311,6 +311,8 @@ configfile_load (void)
     {
       power_conf->resolution = 640;
     }
+	power_conf->resolution = 320;
+	power_conf->scale_x = 1;
   sub = search_for (lst, "joy_config");
   if (sub)
     sub = lisp_car_int (sub, &power_conf->joy_x_axis);
